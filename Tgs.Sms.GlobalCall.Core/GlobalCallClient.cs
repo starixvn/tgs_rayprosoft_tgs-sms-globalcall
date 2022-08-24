@@ -51,27 +51,27 @@ namespace Tgs.Sms.GlobalCall
 
             if (transactionId == "-1")
             {
-                _logger.LogInformation("Wrong Destination Number:{DestinatingAddress}", request.DestinatingAddress);
+                _logger.LogError("Wrong Destination Number:{DestinatingAddress}", request.DestinatingAddress);
                 return null;
             }
             else if (transactionId == "-2")
             {
-                _logger.LogInformation("Account Information / username / IP / password incorrect: Username: {Username}, Password:{Password}", request.Username, request.Password);
+                _logger.LogError("Account Information / username / IP / password incorrect: Username: {Username}, Password:{Password}", request.Username, request.Password);
                 return null;
             }
             else if (transactionId == "-3")
             {
-                _logger.LogInformation("Content ID incorrect");
+                _logger.LogError("Content ID incorrect");
                 return null;
             }
             else if (transactionId == "-4")
             {
-                _logger.LogInformation("Destination Number not all correct");
+                _logger.LogError("Destination Number not all correct");
                 return null;
             }
             else if (transactionId == "-100")
             {
-                _logger.LogInformation("Internal Error, please contact support");
+                _logger.LogError("Internal Error, please contact support");
                 return null;
             }
 
