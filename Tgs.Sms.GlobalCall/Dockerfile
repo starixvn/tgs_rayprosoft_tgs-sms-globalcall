@@ -2,12 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
+EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 ARG BuildConfiguration=Release
-RUN --mount=type=secret,id=nuget,dst=/pat cp /pat ~/.nuget/NuGet/NuGet.Config
-RUN dotnet nuget remove source 'Microsoft Visual Studio Offline Packages' || true
 WORKDIR /src
+COPY ["nuget.config", "."]
 COPY ["Tgs.Sms.GlobalCall/Tgs.Sms.GlobalCall.csproj", "Tgs.Sms.GlobalCall/"]
 COPY ["Tgs.Sms.GlobalCall.Core/Tgs.Sms.GlobalCall.Core.csproj", "Tgs.Sms.GlobalCall.Core/"]
 COPY ["Tgs.Sms.GlobalCall.Repositories/Tgs.Sms.GlobalCall.Repositories.csproj", "Tgs.Sms.GlobalCall.Repositories/"]
@@ -18,7 +18,7 @@ RUN dotnet build "Tgs.Sms.GlobalCall.csproj" -c $BuildConfiguration -o /app/buil
 
 FROM build AS publish
 ARG BuildConfiguration
-RUN dotnet publish "Tgs.Sms.GlobalCall.csproj" -c $BuildConfiguration -o /app/publish
+RUN dotnet publish "Tgs.Sms.GlobalCall.csproj" -c $BuildConfiguration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

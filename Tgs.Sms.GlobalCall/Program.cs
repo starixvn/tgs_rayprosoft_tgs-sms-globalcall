@@ -1,30 +1,65 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Tgs.Sms.GlobalCall.Core;
+using Tgs.Sms.GlobalCall.MessageQueue;
 
-namespace Tgs.Sms.GlobalCall
-{
-    public class Program
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("/config/appsettings.json", true);
+
+builder.Services.AddRabbitMessageQueue(queueConfig =>
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        queueConfig
+            .ConfigQueueOptions((options, sp) =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((_, builder) =>
+                config.GetSection("Sms").Bind(options);
+
+                options.OnSetupQueueAndExchange = channel =>
                 {
-                    builder.AddJsonFile("/config/appsettings.json", true);
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+                    _ = channel.QueueDeclare(
+                        "tgs.sms.globalcall",
+                        true,
+                        false,
+                        false,
+                        null);
+
+                    channel.QueueBind(
+                        "tgs.sms.globalcall",
+                        "amq.direct",
+                        "tgs.sms.globalcall",
+                        null);
+                };
+            })
+            .AddHandler<GlobalCallReceiveHandler>("tgs.sms.globalcall", false);
+    });
+
+builder.Services
+    .AddSingleton<GlobalCallSerializer>()
+    .AddGlobalCallRepositories(
+    (sp, dbContextBuilder) =>
+    {
+        var config = sp.GetRequiredService<IConfiguration>();
+
+        dbContextBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
+    });
+
+builder.Services.AddGlobalCallSms((options, sp) =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    config.GetSection("GlobalCallSms").Bind(options);
+});
+
+var app = builder.Build();
+
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Hello World!");
+    });
+});
+
+app.Run();
