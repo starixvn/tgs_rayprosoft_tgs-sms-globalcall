@@ -6,7 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("/config/appsettings.json", true);
 
-builder.Services.AddRabbitMessageQueue(queueConfig =>
+builder.Services
+    .AddMessageQueue()
+    .AddRabbitMessageQueue(queueConfig =>
     {
         queueConfig
             .ConfigQueueOptions((options, sp) =>
