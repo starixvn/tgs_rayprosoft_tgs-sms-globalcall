@@ -17,16 +17,10 @@ imagePullSecrets:
 nameOverride: "sms-globalcall"
 fullnameOverride: "sms-globalcall"
 
-connectionStrings:
-  tgs: Server=localhost;Database=tgs;User Id=tgs;Password=1qaz2wsx!@
-
-rabbit:
-  url: amqp://localhost:5672
-  user: devadmin
-  password: devadmin
-  vhost: /devhost
-
-podAnnotations: {}
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "52325"
+  prometheus.io/scrape: "true"
 
 podSecurityContext: {}
   # fsGroup: 2000
