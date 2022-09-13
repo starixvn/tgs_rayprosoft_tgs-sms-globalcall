@@ -1,10 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
+using Tgs.Sms.GlobalCall;
 using Tgs.Sms.GlobalCall.Core;
 using Tgs.Sms.GlobalCall.MessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("/config/appsettings.json", true);
+
+builder.Services.AddOpenTelemetryTracing(builder =>
+    builder
+        .AddAspNetCoreInstrumentation()
+        .AddSource("TGS.*")
+        .AddSource("Tgs.*")
+        .AddProcessor(new SimpleActivityExportProcessor(new PerformanceCounterExporter())));
 
 builder.Services
     .AddMessageQueue()
@@ -34,7 +44,8 @@ builder.Services
                 };
             })
             .AddHandler<GlobalCallReceiveHandler>("tgs.sms.globalcall", false);
-    });
+    })
+    .AddRabbitGlobPatternExchange("*", "amq.direct"); ;
 
 builder.Services
     .AddSingleton<GlobalCallSerializer>()
@@ -45,6 +56,8 @@ builder.Services
 
         dbContextBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
     });
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddGlobalCallSms((options, sp) =>
 {
@@ -63,5 +76,7 @@ app.UseEndpoints(endpoints =>
         await context.Response.WriteAsync("Hello World!");
     });
 });
+
+app.MapHealthChecks("/healthz");
 
 app.Run();
