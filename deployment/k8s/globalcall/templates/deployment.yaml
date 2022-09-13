@@ -1,8 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "globalcall.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  name: {{ include "globalcall.fullname" . }}  
   labels:
     {{- include "globalcall.labels" . | nindent 4 }}
 spec:
