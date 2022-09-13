@@ -17,16 +17,10 @@ imagePullSecrets:
 nameOverride: "sms-globalcall"
 fullnameOverride: "sms-globalcall"
 
-connectionStrings:
-  tgs: Server=localhost;Database=tgs;User Id=tgs;Password=1qaz2wsx!@
-
-rabbit:
-  url: amqp://localhost:5672
-  user: devadmin
-  password: devadmin
-  vhost: /devhost
-
-podAnnotations: {}
+podAnnotations:
+  prometheus.io/path: /metrics
+  prometheus.io/port: "52325"
+  prometheus.io/scrape: "true"
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -38,6 +32,10 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -56,7 +54,7 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
-  #  targetMemoryUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 

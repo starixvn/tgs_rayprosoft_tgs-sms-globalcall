@@ -5,13 +5,21 @@ metadata:
 data:
   appsettings.json: |
     {
-      "ConnectionStrings": {
-        "Tgs": "{{ .Values.connectionStrings.tgs }}"
+    }
+  monitor.settings.json: |
+    {
+      "Metrics": {
+        "MetricCount": "1"
       },
-      "Sms": {
-        "RabbitMQUrl": "{{ .Values.rabbit.url }}",
-        "UserName": "{{ .Values.rabbit.user }}",
-        "Password": "{{ .Values.rabbit.password }}",
-        "VirtualHost": "{{ .Values.rabbit.vhost  }}"
+      "Logging":{
+        "Console": {
+          "FormatterName": "json"
+        },
+        "LogLevel": {
+          "Default": "Warning",
+          "Microsoft": "Warning",
+          "Microsoft.Diagnostics": "Warning",
+          "Microsoft.Hosting.Lifetime": "Information"
+        }
       }
     }
