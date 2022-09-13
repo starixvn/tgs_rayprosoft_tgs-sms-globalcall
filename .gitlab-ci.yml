@@ -79,8 +79,7 @@ deploy-dev:
   environment:
     name: dev
   stage: deploy-dev
-  needs:
-    - push-nuget
+  needs:    
     - push-docker-image
     - job: push-k8s-template
       artifacts: true
