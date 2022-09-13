@@ -44,6 +44,11 @@ spec:
                 secretKeyRef:
                   name: tgs-connections
                   key: tgs
+            - name: GlobalCallSms__SmsApiUrl
+              valueFrom:
+                secretKeyRef:
+                  name: tgs-connections
+                  key: sms-globalcall-smsApiUrl
             - name: Sms__RabbitMQUrl
               valueFrom:
                 secretKeyRef:
