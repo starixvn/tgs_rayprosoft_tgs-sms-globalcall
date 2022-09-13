@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Tgs.MessageQueue;
 using Tgs.Sms.Protos;
 
@@ -23,9 +20,9 @@ namespace Tgs.Sms.GlobalCall.MessageQueue
             _globalCallClient = globalCallClient ?? throw new ArgumentNullException(nameof(globalCallClient));
         }
 
-        public async ValueTask HandleAsync(byte[] data, CancellationToken cancellationToken = default)
+        public async ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
         {
-            var shortMsg = ShortMessage.Parser.ParseFrom(data);
+            var shortMsg = ShortMessage.Parser.ParseFrom(data.Span);
             var brandId = shortMsg.BrandId.ToGuid();
 
             _logger.LogInformation(
