@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -31,7 +30,7 @@ namespace Tgs.Sms.GlobalCall
             queryStrings.Add("destinatingAddress", request.DestinatingAddress);
 
             var xmlEncodeString = Encoder.XmlEncode(request.Sms);
-            var sms = WebUtility.UrlEncode(xmlEncodeString);
+            var sms = Uri.EscapeDataString(xmlEncodeString);
 
             queryStrings.Add("SMS", sms);
 
