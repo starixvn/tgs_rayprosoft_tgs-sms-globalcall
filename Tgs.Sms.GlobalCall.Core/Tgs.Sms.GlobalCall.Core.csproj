@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 	<RootNamespace>Tgs.Sms.GlobalCall</RootNamespace>
 	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AntiXSS.NetStandard" Version="0.1.125" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Tgs.MessageQueue" Version="1.1.1" />
-    <PackageReference Include="TGS.SmsReceiver" Version="0.0.4-alpha" />
+    <PackageReference Include="Tgs.MessageQueue" Version="2.1.0" />
+    <PackageReference Include="TGS.SmsReceiver" Version="0.0.5" />
   </ItemGroup>
 
 </Project>
