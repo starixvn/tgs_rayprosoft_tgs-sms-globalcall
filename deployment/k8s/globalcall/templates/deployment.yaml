@@ -86,7 +86,7 @@ spec:
             failureThreshold: 30
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      - name: monitor
+        - name: monitor
           image: mcr.microsoft.com/dotnet/monitor:6.0.0
           args: [ "--no-auth" ]
           imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -123,6 +123,10 @@ spec:
         - name: appsettings
           configMap:
             name: configmap-{{ include "globalcall.fullname" . }}
+        - name: diagvol
+          emptyDir: {}
+        - name: dumpsvol
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
