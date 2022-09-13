@@ -45,7 +45,7 @@ builder.Services
             })
             .AddHandler<GlobalCallReceiveHandler>("tgs.sms.globalcall", false);
     })
-    .AddRabbitGlobPatternExchange("*", "amq.direct"); ;
+    .AddRabbitGlobPatternExchange("*", "amq.direct");
 
 builder.Services
     .AddSingleton<GlobalCallSerializer>()
