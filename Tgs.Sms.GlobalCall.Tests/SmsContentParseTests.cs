@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace Tgs.Sms.GlobalCall.Tests
 {
+    [TestFixture]
     public class SmsContentParseTests
     {
         [Test]
