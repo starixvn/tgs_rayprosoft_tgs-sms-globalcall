@@ -65,7 +65,7 @@ namespace Tgs.Sms.GlobalCall.MessageQueue
             var response = await _globalCallClient.SendSMSAsync(request).ConfigureAwait(false);
 
             if (response is null)
-                throw new Exception("Sms send fail");
+                _logger.LogError("Sms send fail");
 
             _logger.LogInformation("Sms sent.");
         }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 using Microsoft.Extensions.Logging;
 using Microsoft.Security.Application;
 using Tgs.Sms.GlobalCall.Models;
@@ -27,7 +24,7 @@ namespace Tgs.Sms.GlobalCall
 
             queryStrings.Add("username", request.Username);
             queryStrings.Add("password", request.Password);
-            queryStrings.Add("destinatingAddress", request.DestinatingAddress);
+            queryStrings.Add("destinatingAddress", request.DestinatingAddress.Replace("+", ""));
 
             var xmlEncodeString = Encoder.XmlEncode(request.Sms);
             var sms = Uri.EscapeDataString(xmlEncodeString);
