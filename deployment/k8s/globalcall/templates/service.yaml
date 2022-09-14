@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "globalcall.fullname" . }}
-  namespace: {{ .Values.namespace }}
+  name: {{ include "globalcall.fullname" . }}  
   labels:
     {{- include "globalcall.labels" . | nindent 4 }}
 spec:
