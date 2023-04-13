@@ -1,4 +1,5 @@
-{
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -7,13 +8,26 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Tgs.Sms.GlobalCall": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTEL_SERVICE_NAME": "Sms-GlobalCall(local)",
+        "NODE_IP": "otel.rpgp.cc"
+      }
+    },
+    "https": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTEL_SERVICE_NAME": "Sms-GlobalCall(local)",
+        "NODE_IP": "otel.rpgp.cc"
       },
-      "dotnetRunMessages": "true",
+      "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },
     "Docker": {
@@ -21,7 +35,12 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTEL_SERVICE_NAME": "Sms-GlobalCall(local)",
+        "NODE_IP": "otel.rpgp.cc"
+      }
     }
   },
   "iisSettings": {

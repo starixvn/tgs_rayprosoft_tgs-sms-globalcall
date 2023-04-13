@@ -39,7 +39,7 @@ namespace Tgs.Sms.GlobalCall
             .ReadAsStringAsync()
             .ConfigureAwait(false);
 
-            _logger.LogInformation(responseMessage);
+            _logger.LogInformation("Sms GlobalCall Response:{responseMessage}", responseMessage);
 
             var transactionId = responseMessage.Trim();
 
