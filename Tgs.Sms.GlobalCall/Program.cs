@@ -58,7 +58,7 @@ builder.Services
     .AddMessageQueue()
     .AddRabbitMessageQueue(queueConfig =>
     {
-        queueConfig
+        _ = queueConfig
             .ConfigQueueOptions((options, sp) =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();
@@ -92,7 +92,7 @@ builder.Services
     {
         var config = sp.GetRequiredService<IConfiguration>();
 
-        dbContextBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
+        _ = dbContextBuilder.UseNpgsql(config.GetConnectionString("Tgs"));
     });
 
 builder.Services.AddHealthChecks();
